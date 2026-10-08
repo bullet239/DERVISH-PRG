@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineSphere Studio • Filmmaker's Pre-Production & Script Suite</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Space+Grotesk:wght@500;600;700;800&family=Syne:wght@700;800&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Styles with Dynamic CSS Variables for Custom Themes -->
+  <style>
+    :root {
+      --color-primary: #FF2A55;   /* Electric Red */
+      --color-blue: #1E40FF;      /* Cobalt Blue */
+      --color-purple: #8A2BE2;    /* Royal Purple */
+      --color-bg: #FFFFFF;        /* Pure White Background */
+      --color-surface: #F8F9FD;   /* Clean Surface Tint */
+      --color-border: #000000;    /* High Contrast Border */
+      --font-body: 'Space Grotesk', sans-serif;
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-script: 'Courier Prime', Courier, monospace;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      font-family: var(--font-body);
+      color: #111827;
+      background-image: 
+        radial-gradient(#E2E8F0 1.2px, transparent 1.2px),
+        linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    h1, h2, h3, .font-heading {
+      font-family: var(--font-heading);
+    }
+
+    /* Tactile Neo-Brutalist Surfaces */
+    .pop-card {
+      background-color: var(--color-surface);
+      border: 3px solid var(--color-border);
+      box-shadow: 5px 5px 0px var(--color-border);
+      transition: all 0.15s ease-in-out;
+    }
+
+    .pop-card-sm {
+      background-color: #FFFFFF;
+      border: 2.5px solid var(--color-border);
+      box-shadow: 3.5px 3.5px 0px var(--color-border);
+    }
+
+    .pop-btn {
+      border: 2.5px solid var(--color-border);
+      box-shadow: 3px 3px 0px var(--color-border);
+      transition: all 0.1s ease;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .pop-btn:hover {
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 4.5px 4.5px 0px var(--color-border);
+    }
+
+    .pop-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px var(--color-border);
+    }
+
+    /* Screenplay Paper Container */
+    .screenplay-paper {
+      font-family: var(--font-script);
+      font-size: 14.5px;
+      line-height: 1.55;
+      background-color: #FFFFFF;
+      border: 3px solid var(--color-border);
+      box-shadow: 7px 7px 0px var(--color-border);
+      caret-color: var(--color-primary);
+    }
+
+    .arabic-text {
+      direction: rtl;
+      font-family: 'Tajawal', var(--font-body);
+      text-align: right;
+    }
+
+    /* Canvas Drawing Pad */
+    #sketch-canvas {
+      touch-action: none;
+      cursor: crosshair;
+      background-color: #FFFFFF;
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 9px;
+      height: 9px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+      border: 1.5px solid #000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-blue);
+      border: 1.5px solid #000;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #print-modal, #print-modal * {
+        visibility: visible;
+      }
+      #print-modal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-[#FF2A55] selection:text-white">
+
+  <header class="bg-white border-b-4 border-black sticky top-0 z-40 px-3 sm:px-6 py-2.5">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Logo & Project Quick Edit -->
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-[#FF2A55] text-white border-3 border-black flex items-center justify-center font-black text-xl shadow-[3px_3px_0px_#000]">
+          <i class="fa-solid fa-clapperboard"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-heading font-black text-lg tracking-tight text-black">
+              CINE<span style="color: var(--color-blue);">SPHERE</span> STUDIO
+            </h1>
+            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 border-2 border-black bg-[#8A2BE2] text-white">
+              DIRECTOR PRO
+            </span>
+          </div>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span class="text-[11px] font-bold text-slate-500 uppercase">TITLE:</span>
+            <input id="project-title" type="text" value="THE MIDNIGHT ECHOES" 
+              class="bg-slate-100 text-xs font-bold text-black border-2 border-black px-2 py-0.5 focus:bg-white focus:outline-none w-44 sm:w-64"
+              placeholder="ENTER FILM TITLE" title="Click to rename your film project">
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Controls: Customizer, Export, Slots -->
+      <div class="flex items-center gap-2 flex-wrap">
+        
+        <!-- Style & Font Customizer Toggle -->
+        <button onclick="toggleCustomizerModal()" class="pop-btn bg-white text-black px-3 py-1.5 text-xs font-bold flex items-center gap-1.5" title="Customize theme colors & typography">
+          <i class="fa-solid fa-palette" style="color: var(--color-purple);"></i>
+          <span>STUDIO LOOK</span>
+        </button>
+
+        <!-- Backup & Import Actions -->
+        <button onclick="exportProjectJSON()" class="pop-btn bg-white text-black px-3 py-1.5 text-xs font-bold flex items-center gap-1.5" title="Export project backup">
+          <i class="fa-solid fa-file-arrow-down" style="color: var(--color-blue);"></i>
+          <span>EXPORT JSON</span>
+        </button>
+
+        <label class="pop-btn bg-white text-black px-3 py-1.5 text-xs font-bold flex items-center gap-1.5 cursor-pointer" title="Restore project backup">
+          <i class="fa-solid fa-file-arrow-up" style="color: var(--color-primary);"></i>
+          <span>IMPORT</span>
+          <input type="file" id="import-json-file" accept=".json" class="hidden" onchange="importProjectJSON(event)">
+        </label>
+
+        <!-- Print Production Dossier -->
+        <button onclick="openPrintModal()" class="pop-btn text-white px-3.5 py-1.5 text-xs font-black flex items-center gap-1.5" style="background-color: var(--color-primary);">
+          <i class="fa-solid fa-print"></i>
+          <span>PRINT DOSSIER</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <div class="max-w-7xl mx-auto mt-2.5 pt-2 border-t-2 border-slate-200 flex items-center gap-2 overflow-x-auto pb-1">
+      <button onclick="switchTab('treatment')" id="tab-btn-treatment" class="tab-button pop-btn bg-black text-white px-3.5 py-1.5 text-xs font-bold flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-sitemap" style="color: var(--color-primary);"></i>
+        <span>1. TREATMENT & MIND MAP</span>
+      </button>
+
+      <button onclick="switchTab('characters')" id="tab-btn-characters" class="tab-button pop-btn bg-white text-black px-3.5 py-1.5 text-xs font-bold flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-user-tag" style="color: var(--color-blue);"></i>
+        <span>2. CHARACTER DOSSIER</span>
+        <span id="nav-char-count" class="text-[10px] bg-slate-200 px-1.5 py-0.2 border border-black font-black">2</span>
+      </button>
+
+      <button onclick="switchTab('shots')" id="tab-btn-shots" class="tab-button pop-btn bg-white text-black px-3.5 py-1.5 text-xs font-bold flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-video" style="color: var(--color-purple);"></i>
+        <span>3. SHOT LIST</span>
+        <span id="nav-shot-count" class="text-[10px] bg-slate-200 px-1.5 py-0.2 border border-black font-black">3</span>
+      </button>
+
+      <button onclick="switchTab('storyboard')" id="tab-btn-storyboard" class="tab-button pop-btn bg-white text-black px-3.5 py-1.5 text-xs font-bold flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-film" style="color: var(--color-primary);"></i>
+        <span>4. STORYBOARD CANVAS</span>
+      </button>
+
+      <button onclick="switchTab('moodboard')" id="tab-btn-moodboard" class="tab-button pop-btn bg-white text-black px-3.5 py-1.5 text-xs font-bold flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-images" style="color: var(--color-blue);"></i>
+        <span>5. MOOD BOARD</span>
+      </button>
+
+      <button onclick="switchTab('screenplay')" id="tab-btn-screenplay" class="tab-button pop-btn bg-white text-black px-3.5 py-1.5 text-xs font-bold flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-feather-pointed" style="color: var(--color-purple);"></i>
+        <span>6. SCRIPT STUDIO (EN / AR)</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Notification Toast Overlay -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 pointer-events-none transition-all duration-200 transform translate-y-10 opacity-0 bg-black text-white px-4 py-2.5 border-3 border-black shadow-[4px_4px_0px_#FF2A55] text-xs font-black flex items-center gap-2"></div>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 space-y-6">
+
+    <!-- ======================================================== -->
+    <!-- TAB 1: TREATMENT & STORY MIND MAP                        -->
+    <!-- ======================================================== -->
+    <section id="panel-treatment" class="tab-panel space-y-6">
+      
+      <!-- Top Premise & Treatment Overview -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 pop-card p-5 space-y-4">
+          <div class="flex items-center justify-between border-b-2 border-black pb-2">
+            <h2 class="font-heading font-black text-base text-black flex items-center gap-2">
+              <i class="fa-solid fa-align-left" style="color: var(--color-primary);"></i>
+              CORE TREATMENT & LOGLINE
+            </h2>
+            <span class="text-xs font-bold text-slate-500 uppercase">HIGH-CONCEPT FOUNDATION</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-black uppercase text-black mb-1">
+              LOGLINE (PROTAGONIST + CATALYST + CORE ANTAGONIST + STAKES):
+            </label>
+            <textarea id="story-logline" rows="3" 
+              class="w-full bg-white border-2 border-black p-3 text-sm font-medium text-black focus:outline-none focus:border-[#FF2A55] resize-none leading-relaxed"
+              placeholder="When an insomniac acoustic engineer records a voice inside an abandoned subway tunnel..."></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-[11px] font-black uppercase text-black mb-1">DRAMATIC QUESTION</label>
+              <input type="text" id="story-question" class="w-full bg-white border-2 border-black px-2.5 py-1.5 text-xs text-black focus:outline-none" placeholder="Can he tell real sounds from illusion?">
+            </div>
+            <div>
+              <label class="block text-[11px] font-black uppercase text-black mb-1">GENRE & TONE</label>
+              <input type="text" id="story-genre" class="w-full bg-white border-2 border-black px-2.5 py-1.5 text-xs text-black focus:outline-none" placeholder="Psychological Mystery / Thriller">
+            </div>
+            <div>
+              <label class="block text-[11px] font-black uppercase text-black mb-1">FORMAT & RUNTIME</label>
+              <input type="text" id="story-runtime" class="w-full bg-white border-2 border-black px-2.5 py-1.5 text-xs text-black focus:outline-none" placeholder="Feature • 110 Minutes">
+            </div>
+          </div>
+        </div>
+
+        <!-- Synopsis & Theme Capsule -->
+        <div class="pop-card p-5 space-y-3 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between border-b-2 border-black pb-2">
+              <h3 class="font-heading font-black text-sm text-black flex items-center gap-2">
+                <i class="fa-solid fa-quote-left" style="color: var(--color-blue);"></i> CENTRAL THEME
+              </h3>
+              <span class="text-[10px] font-bold bg-slate-200 px-1.5 py-0.5 border border-black">MOTIF</span>
+            </div>
+
+            <div class="mt-2.5">
+              <label class="block text-[11px] font-black uppercase text-black mb-1">PHILOSOPHICAL STATEMENT</label>
+              <textarea id="story-theme" rows="3" class="w-full bg-white border-2 border-black p-2 text-xs text-black focus:outline-none resize-none leading-relaxed" placeholder="The consequences of isolating oneself from grief..."></textarea>
+            </div>
+          </div>
+
+          <div class="bg-white border-2 border-black p-3 space-y-1.5">
+            <div class="flex justify-between text-xs font-bold">
+              <span>TARGET PACE:</span>
+              <span style="color: var(--color-blue);">DELIBERATE / TENSION</span>
+            </div>
+            <div class="flex justify-between text-xs font-bold">
+              <span>ASPECT RATIO:</span>
+              <span style="color: var(--color-primary);">2.39:1 ANAMORPHIC</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Treatment Structural Beats -->
+      <div class="pop-card p-5 space-y-4">
+        <div class="flex items-center justify-between border-b-2 border-black pb-3">
+          <div>
+            <h3 class="font-heading font-black text-base text-black flex items-center gap-2">
+              <i class="fa-solid fa-diagram-project" style="color: var(--color-purple);"></i>
+              THREE-ACT TREATMENT STRUCTURE
+            </h3>
+            <p class="text-xs text-slate-500 font-medium">Standard structural anchors defining momentum and escalation.</p>
+          </div>
+          <button onclick="refreshMindMap()" class="pop-btn bg-white text-black px-3 py-1.5 text-xs font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-arrows-rotate"></i> SYNC MIND MAP
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="beats-container">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Interactive Story Mind Map Canvas -->
+      <div class="pop-card p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-black pb-3">
+          <div>
+            <h3 class="font-heading font-black text-base text-black flex items-center gap-2">
+              <i class="fa-solid fa-circle-nodes" style="color: var(--color-primary);"></i>
+              INTERACTIVE STORY ARCHITECTURE MIND MAP
+            </h3>
+            <p class="text-xs text-slate-500 font-medium">Real-time graph connecting Project Premise, Act Beats, Characters, and Locations.</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="exportMindMapPNG()" class="pop-btn text-white px-3.5 py-1.5 text-xs font-black flex items-center gap-1.5" style="background-color: var(--color-blue);">
+              <i class="fa-solid fa-download"></i> EXPORT MAP (PNG)
+            </button>
+          </div>
+        </div>
+
+        <!-- Canvas Container -->
+        <div class="border-3 border-black bg-white overflow-hidden shadow-[inset_0_2px_8px_rgba(0,0,0,0.06)] relative">
+          <canvas id="mindmap-canvas" height="420" class="w-full block"></canvas>
+          <div class="absolute bottom-2 right-2 text-[10px] font-bold bg-white/90 px-2 py-1 border border-black text-slate-600">
+            AUTO-GENERATED GRAPH
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 2: STREAMLINED CHARACTER DOSSIER                     -->
+    <!-- ======================================================== -->
+    <section id="panel-characters" class="tab-panel hidden space-y-6">
+      
+      <!-- Top Action Bar -->
+      <div class="pop-card p-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="font-heading font-black text-lg text-black flex items-center gap-2">
+            <i class="fa-solid fa-users" style="color: var(--color-blue);"></i>
+            STREAMLINED CHARACTER PROFILES (3-DIMENSIONAL)
+          </h2>
+          <p class="text-xs text-slate-500 font-medium">Clear physical presence, social status, and psychological want vs. need.</p>
+        </div>
+
+        <button onclick="openNewCharacterModal()" class="pop-btn text-white px-4 py-2 text-xs font-black flex items-center gap-2" style="background-color: var(--color-primary);">
+          <i class="fa-solid fa-user-plus"></i> NEW CHARACTER
+        </button>
+      </div>
+
+      <!-- Character Card Grid -->
+      <div id="character-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 3: DEDICATED PRODUCTION SHOT LIST                    -->
+    <!-- ======================================================== -->
+    <section id="panel-shots" class="tab-panel hidden space-y-6">
+      
+      <!-- Shot List Controls -->
+      <div class="pop-card p-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="font-heading font-black text-lg text-black flex items-center gap-2">
+            <i class="fa-solid fa-video" style="color: var(--color-purple);"></i>
+            PRODUCTION SHOT LIST & CAMERA CUE SHEET
+          </h2>
+          <p class="text-xs text-slate-500 font-medium">Log lens focal length, movement, audio mic cues, and on-set shot status.</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="exportShotListCSV()" class="pop-btn bg-white text-black px-3.5 py-2 text-xs font-bold flex items-center gap-2">
+            <i class="fa-solid fa-file-csv" style="color: var(--color-blue);"></i> EXPORT CSV
+          </button>
+          <button onclick="openShotModal()" class="pop-btn text-white px-4 py-2 text-xs font-black flex items-center gap-2" style="background-color: var(--color-purple);">
+            <i class="fa-solid fa-plus"></i> ADD SHOT
+          </button>
+        </div>
+      </div>
+
+      <!-- Table Container -->
+      <div class="pop-card p-4 overflow-x-auto">
+        <table class="w-full text-left border-collapse min-w-[760px]">
+          <thead>
+            <tr class="bg-black text-white text-xs font-black uppercase">
+              <th class="p-3 border-2 border-black w-14 text-center">STATUS</th>
+              <th class="p-3 border-2 border-black w-24">SCENE / SHOT</th>
+              <th class="p-3 border-2 border-black w-36">FRAMING & ANGLE</th>
+              <th class="p-3 border-2 border-black w-28">LENS (MM)</th>
+              <th class="p-3 border-2 border-black w-32">MOVEMENT</th>
+              <th class="p-3 border-2 border-black">DESCRIPTION & DRAMATIC ACTION</th>
+              <th class="p-3 border-2 border-black w-28 text-right">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody id="shot-list-body" class="text-xs divide-y-2 divide-black font-medium">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 4: STORYBOARD CANVAS & SKETCH PAD                    -->
+    <!-- ======================================================== -->
+    <section id="panel-storyboard" class="tab-panel hidden space-y-6">
+      
+      <!-- Storyboard Interactive Workspace -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left: Drawing & Upload Pad -->
+        <div class="lg:col-span-1 pop-card p-5 space-y-4">
+          <div class="flex items-center justify-between border-b-2 border-black pb-2">
+            <h3 class="font-heading font-black text-base text-black flex items-center gap-2">
+              <i class="fa-solid fa-pen-ruler" style="color: var(--color-primary);"></i>
+              FRAME SKETCH PAD
+            </h3>
+            <span class="text-[10px] font-bold bg-slate-200 px-1.5 py-0.5 border border-black">16:9 RATIO</span>
+          </div>
+
+          <!-- The Canvas Drawing Area -->
+          <div class="border-3 border-black bg-white overflow-hidden shadow-[3px_3px_0px_#000]">
+            <canvas id="sketch-canvas" width="400" height="225" class="w-full aspect-video block"></canvas>
+          </div>
+
+          <!-- Drawing Tools Palette -->
+          <div class="flex items-center justify-between gap-1 flex-wrap bg-white border-2 border-black p-2">
+            <div class="flex items-center gap-1.5">
+              <button onclick="setDrawingColor('#000000')" class="w-6 h-6 border-2 border-black bg-black rounded-none" title="Black Pen"></button>
+              <button onclick="setDrawingColor('#FF2A55')" class="w-6 h-6 border-2 border-black bg-[#FF2A55] rounded-none" title="Red Marker"></button>
+              <button onclick="setDrawingColor('#1E40FF')" class="w-6 h-6 border-2 border-black bg-[#1E40FF] rounded-none" title="Blue Ink"></button>
+              <button onclick="setDrawingTool('eraser')" class="pop-btn bg-white px-2 py-0.5 text-[11px] font-bold flex items-center gap-1" title="Eraser">
+                <i class="fa-solid fa-eraser"></i>
+              </button>
+            </div>
+
+            <div class="flex items-center gap-1">
+              <button onclick="clearCanvas()" class="pop-btn bg-white text-black px-2 py-0.5 text-[11px] font-bold" title="Clear Pad">
+                CLEAR
+              </button>
+            </div>
+          </div>
+
+          <!-- Metadata for the frame -->
+          <div class="space-y-2.5 text-xs">
+            <div>
+              <label class="block font-black uppercase text-black mb-1">FRAME SHOT LABEL</label>
+              <input type="text" id="board-shot-label" class="w-full bg-white border-2 border-black p-2 text-xs text-black" placeholder="SCENE 01 • SHOT 01 (WIDE ESTABLISHING)">
+            </div>
+            <div>
+              <label class="block font-black uppercase text-black mb-1">ACTION / DIALOGUE NOTE</label>
+              <textarea id="board-shot-desc" rows="2" class="w-full bg-white border-2 border-black p-2 text-xs text-black resize-none" placeholder="The camera glides into the misty train yard..."></textarea>
+            </div>
+
+            <div class="flex items-center gap-2 pt-1">
+              <button onclick="saveCanvasToStoryboard()" class="pop-btn text-white w-full py-2 text-xs font-black" style="background-color: var(--color-primary);">
+                + ADD FRAME TO STORYBOARD
+              </button>
+            </div>
+
+            <!-- Alternative: File upload for sketch/reference -->
+            <div class="text-center pt-2 border-t-2 border-slate-200">
+              <label class="text-[11px] font-bold text-slate-500 hover:text-black cursor-pointer underline flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-upload"></i> Or upload reference image for this frame
+                <input type="file" accept="image/*" class="hidden" onchange="uploadFrameImage(event)">
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Storyboard Reel Gallery -->
+        <div class="lg:col-span-2 pop-card p-5 space-y-4">
+          <div class="flex items-center justify-between border-b-2 border-black pb-2">
+            <div>
+              <h3 class="font-heading font-black text-base text-black flex items-center gap-2">
+                <i class="fa-solid fa-table-cells" style="color: var(--color-blue);"></i>
+                STORYBOARD SEQUENCE REEL
+              </h3>
+              <p class="text-xs text-slate-500">Visual narrative order for director and director of photography.</p>
+            </div>
+            <span id="board-count-badge" class="text-xs font-black bg-black text-white px-2 py-0.5 border border-black">0 FRAMES</span>
+          </div>
+
+          <div id="storyboard-gallery" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 5: DEDICATED VISUAL MOOD BOARD                       -->
+    <!-- ======================================================== -->
+    <section id="panel-moodboard" class="tab-panel hidden space-y-6">
+      
+      <!-- Mood Board Header & Upload -->
+      <div class="pop-card p-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="font-heading font-black text-lg text-black flex items-center gap-2">
+            <i class="fa-solid fa-images" style="color: var(--color-blue);"></i>
+            VISUAL MOOD BOARD & AESTHETIC TREATMENT
+          </h2>
+          <p class="text-xs text-slate-500 font-medium">Color swatches, lighting reference stills, textures, and costume inspiration.</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="addPaletteSwatchPrompt()" class="pop-btn bg-white text-black px-3.5 py-2 text-xs font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-eye-dropper" style="color: var(--color-primary);"></i> + SWATCH
+          </button>
+          
+          <label class="pop-btn text-white px-4 py-2 text-xs font-black flex items-center gap-2 cursor-pointer" style="background-color: var(--color-blue);">
+            <i class="fa-solid fa-cloud-arrow-up"></i> UPLOAD STILL
+            <input type="file" accept="image/*" class="hidden" onchange="uploadMoodboardImage(event)">
+          </label>
+        </div>
+      </div>
+
+      <!-- Color Swatch Palette Bar -->
+      <div class="pop-card p-4 space-y-2">
+        <div class="flex items-center justify-between text-xs font-black uppercase text-black">
+          <span>FILM PRODUCTION PALETTE SWATCHES</span>
+          <span class="text-[10px] text-slate-500 font-bold">CLICK TO REMOVE</span>
+        </div>
+        <div id="mood-swatches-container" class="flex flex-wrap items-center gap-3">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Mood Board Image Grid -->
+      <div id="moodboard-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 6: DUAL-LANGUAGE SCREENPLAY STUDIO (EN / AR)         -->
+    <!-- ======================================================== -->
+    <section id="panel-screenplay" class="tab-panel hidden space-y-4">
+      
+      <!-- Format Shortcuts & Language Toggle -->
+      <div class="pop-card p-4 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-black pb-2.5">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xs font-black uppercase text-black mr-1">FORMAT TOOLBAR:</span>
+
+            <!-- English Quick Buttons -->
+            <button onclick="insertScriptToken('SCENE_INT')" class="pop-btn bg-white text-black text-[11px] px-2.5 py-1">INT.</button>
+            <button onclick="insertScriptToken('SCENE_EXT')" class="pop-btn bg-white text-black text-[11px] px-2.5 py-1">EXT.</button>
+            <button onclick="insertScriptToken('ACTION')" class="pop-btn bg-white text-black text-[11px] px-2.5 py-1">ACTION</button>
+            <button onclick="insertScriptToken('CHARACTER')" class="pop-btn bg-white text-black text-[11px] px-2.5 py-1">CHARACTER</button>
+            <button onclick="insertScriptToken('PARENTHETICAL')" class="pop-btn bg-white text-black text-[11px] px-2.5 py-1">(BEAT)</button>
+            <button onclick="insertScriptToken('DIALOGUE')" class="pop-btn bg-white text-black text-[11px] px-2.5 py-1">DIALOGUE</button>
+            <button onclick="insertScriptToken('TRANSITION')" class="pop-btn bg-white text-black text-[11px] px-2.5 py-1">CUT TO:</button>
+          </div>
+
+          <!-- Arabic Direct Shortcut Buttons -->
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="text-xs font-black uppercase text-[#1E40FF] mr-1">أدوات السيناريو العربي:</span>
+            <button onclick="insertScriptToken('AR_INT')" class="pop-btn bg-white text-black text-[11px] px-2 py-1 font-bold">مشهد داخلي</button>
+            <button onclick="insertScriptToken('AR_EXT')" class="pop-btn bg-white text-black text-[11px] px-2 py-1 font-bold">مشهد خارجي</button>
+            <button onclick="insertScriptToken('AR_CHAR')" class="pop-btn bg-white text-black text-[11px] px-2 py-1 font-bold">اسم الشخصية</button>
+            <button onclick="insertScriptToken('AR_BEAT')" class="pop-btn bg-white text-black text-[11px] px-2 py-1 font-bold">(وقفة / توجيه)</button>
+            <button onclick="insertScriptToken('AR_DIALOGUE')" class="pop-btn bg-white text-black text-[11px] px-2 py-1 font-bold">حوار</button>
+            <button onclick="insertScriptToken('AR_CUT')" class="pop-btn bg-white text-black text-[11px] px-2 py-1 font-bold">قطع إلى:</button>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 text-xs">
+          <!-- Text Direction Switcher -->
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-700">TEXT DIRECTION:</span>
+            <button id="dir-ltr-btn" onclick="setScriptDirection('ltr')" class="pop-btn bg-black text-white px-2.5 py-1 text-[11px]">LTR (English)</button>
+            <button id="dir-rtl-btn" onclick="setScriptDirection('rtl')" class="pop-btn bg-white text-black px-2.5 py-1 text-[11px]">RTL (العربية)</button>
+          </div>
+
+          <!-- Script Counters -->
+          <div class="flex items-center gap-4 font-bold text-slate-700">
+            <span>SCENES: <b id="script-scene-count" class="text-black">2</b></span>
+            <span>WORDS: <b id="script-word-count" class="text-black">0</b></span>
+            <span>EST. TIME: <b id="script-time-est" style="color: var(--color-primary);">~0.0 MIN</b></span>
+            <button onclick="copyScriptText()" class="pop-btn bg-white text-black px-2.5 py-1 text-[11px]">
+              <i class="fa-regular fa-copy"></i> COPY
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Script Textarea Container -->
+      <div class="flex justify-center">
+        <div class="w-full max-w-4xl">
+          <textarea id="screenplay-editor" rows="26" 
+            class="screenplay-paper w-full p-6 sm:p-10 outline-none resize-y tracking-wide"
+            placeholder="FADE IN:&#10;&#10;EXT. ROOFTOP - NIGHT&#10;&#10;Rain drums against the rusty water tower. KAELEN (30s) watches the city lights bleed into the mist."
+            oninput="handleScriptMetrics()"></textarea>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: Studio Color & Font Customizer -->
+  <div id="customizer-modal" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-6 hidden">
+    <div class="pop-card max-w-lg w-full p-6 bg-white space-y-5">
+      <div class="flex items-center justify-between border-b-2 border-black pb-3">
+        <h3 class="font-heading font-black text-lg text-black flex items-center gap-2">
+          <i class="fa-solid fa-sliders" style="color: var(--color-purple);"></i>
+          STUDIO LOOK & TYPOGRAPHY CUSTOMIZER
+        </h3>
+        <button onclick="toggleCustomizerModal()" class="pop-btn bg-black text-white w-7 h-7 flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <div class="space-y-4 text-xs font-medium">
+        <!-- Palette Presets -->
+        <div>
+          <label class="block font-black uppercase text-black mb-1.5">POP PALETTE PRESETS</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="applyThemePreset('neoPop')" class="pop-btn bg-white p-2 text-left text-xs font-bold border-2 border-black">
+              ⚡ Neo-Pop Classic
+            </button>
+            <button onclick="applyThemePreset('cyberCrimson')" class="pop-btn bg-white p-2 text-left text-xs font-bold border-2 border-black">
+              🔥 Cyber Crimson
+            </button>
+            <button onclick="applyThemePreset('midnightMono')" class="pop-btn bg-white p-2 text-left text-xs font-bold border-2 border-black">
+              🎬 Noir & Cobalt
+            </button>
+          </div>
+        </div>
+
+        <!-- Custom Color Pickers -->
+        <div class="grid grid-cols-2 gap-3 pt-1">
+          <div>
+            <label class="block font-black uppercase text-black mb-1">PRIMARY RED ACCENT</label>
+            <div class="flex items-center gap-2 border-2 border-black p-1 bg-white">
+              <input type="color" id="theme-color-primary" value="#FF2A55" onchange="updateThemeVariable('--color-primary', this.value)" class="w-8 h-8 border border-black cursor-pointer">
+              <span id="theme-color-primary-val" class="font-mono text-xs font-bold">#FF2A55</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-black uppercase text-black mb-1">COBALT BLUE ACCENT</label>
+            <div class="flex items-center gap-2 border-2 border-black p-1 bg-white">
+              <input type="color" id="theme-color-blue" value="#1E40FF" onchange="updateThemeVariable('--color-blue', this.value)" class="w-8 h-8 border border-black cursor-pointer">
+              <span id="theme-color-blue-val" class="font-mono text-xs font-bold">#1E40FF</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-black uppercase text-black mb-1">ROYAL PURPLE ACCENT</label>
+            <div class="flex items-center gap-2 border-2 border-black p-1 bg-white">
+              <input type="color" id="theme-color-purple" value="#8A2BE2" onchange="updateThemeVariable('--color-purple', this.value)" class="w-8 h-8 border border-black cursor-pointer">
+              <span id="theme-color-purple-val" class="font-mono text-xs font-bold">#8A2BE2</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-black uppercase text-black mb-1">CANVAS BACKGROUND TINT</label>
+            <div class="flex items-center gap-2 border-2 border-black p-1 bg-white">
+              <input type="color" id="theme-color-bg" value="#FFFFFF" onchange="updateThemeVariable('--color-bg', this.value)" class="w-8 h-8 border border-black cursor-pointer">
+              <span id="theme-color-bg-val" class="font-mono text-xs font-bold">#FFFFFF</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Font Pickers -->
+        <div class="space-y-3 pt-2 border-t-2 border-slate-200">
+          <div>
+            <label class="block font-black uppercase text-black mb-1">STUDIO INTERFACE FONT</label>
+            <select id="theme-font-ui" onchange="updateUIFont(this.value)" class="w-full bg-white border-2 border-black p-2 text-xs font-bold">
+              <option value="'Space Grotesk', sans-serif">Space Grotesk (Neo-Brutalist Geometric)</option>
+              <option value="'Inter', sans-serif">Inter (Modern Clean Studio)</option>
+              <option value="'Syne', sans-serif">Syne (High-Impact Art Direction)</option>
+              <option value="'Playfair Display', serif">Playfair Display (Editorial Cinema)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-black uppercase text-black mb-1">SCREENPLAY MONOSPACE FONT</label>
+            <select id="theme-font-script" onchange="updateScriptFont(this.value)" class="w-full bg-white border-2 border-black p-2 text-xs font-bold">
+              <option value="'Courier Prime', Courier, monospace">Courier Prime (Industry Standard)</option>
+              <option value="'Courier New', Courier, monospace">Courier New (Crisp Modern)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t-2 border-black">
+        <button onclick="resetThemeDefaults()" class="pop-btn bg-white text-black px-3.5 py-1.5 text-xs font-bold">RESET DEFAULTS</button>
+        <button onclick="toggleCustomizerModal()" class="pop-btn text-white px-4 py-1.5 text-xs font-black" style="background-color: var(--color-blue);">SAVE & CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Streamlined Character Setup -->
+  <div id="character-modal" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-6 hidden">
+    <div class="pop-card max-w-xl w-full p-6 bg-white space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b-2 border-black pb-3">
+        <h3 id="char-modal-title" class="font-heading font-black text-lg text-black flex items-center gap-2">
+          <i class="fa-solid fa-user-pen" style="color: var(--color-primary);"></i>
+          CHARACTER PROFILE
+        </h3>
+        <button onclick="closeCharacterModal()" class="pop-btn bg-black text-white w-7 h-7 flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <input type="hidden" id="modal-char-id">
+
+      <div class="space-y-3 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-black uppercase text-black mb-1">CHARACTER NAME</label>
+            <input type="text" id="modal-char-name" class="w-full bg-white border-2 border-black p-2 text-xs font-bold text-black" placeholder="e.g. KAELEN VOSS">
+          </div>
+          <div>
+            <label class="block font-black uppercase text-black mb-1">DRAMATIC ROLE</label>
+            <select id="modal-char-role" class="w-full bg-white border-2 border-black p-2 text-xs font-bold text-black">
+              <option value="Protagonist">Protagonist (Hero / Central)</option>
+              <option value="Antagonist">Antagonist (Adversary / Pressure)</option>
+              <option value="Supporting">Supporting / Ally</option>
+              <option value="Mentor / Catalyst">Mentor / Catalyst</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 3-Dimensions Distilled Simply -->
+        <div class="p-3 bg-slate-50 border-2 border-black space-y-2.5">
+          <span class="block text-[11px] font-black uppercase tracking-wider text-black">THE THREE DIMENSIONS:</span>
+
+          <div>
+            <label class="block font-bold text-slate-800 mb-0.5">1. PHYSICAL (Age, appearance, speech, signature trait)</label>
+            <input type="text" id="modal-char-physical" class="w-full bg-white border-2 border-black p-1.5 text-xs text-black" placeholder="Late 30s, tired posture, gravel voice, carries audio recorder">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-800 mb-0.5">2. SOCIAL (Status, occupation, relationships, mask)</label>
+            <input type="text" id="modal-char-social" class="w-full bg-white border-2 border-black p-1.5 text-xs text-black" placeholder="Acoustic engineer, lives alone, detached from family">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-800 mb-0.5">3. MENTAL & PSYCHOLOGICAL (External Want vs Internal Need)</label>
+            <input type="text" id="modal-char-mental" class="w-full bg-white border-2 border-black p-1.5 text-xs text-black" placeholder="WANT: Decode the frequency. NEED: Accept the grief he’s running from.">
+          </div>
+        </div>
+
+        <!-- Simple Tagline / Logline -->
+        <div>
+          <label class="block font-black uppercase text-black mb-1">KEY CONFLICT & SHORT BIO</label>
+          <textarea id="modal-char-bio" rows="3" class="w-full bg-white border-2 border-black p-2 text-xs text-black resize-none" placeholder="Brief backstory and why this character drives or complicates the story..."></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t-2 border-black">
+        <button onclick="closeCharacterModal()" class="pop-btn bg-white text-black px-3.5 py-1.5 text-xs font-bold">CANCEL</button>
+        <button onclick="saveCharacterModalData()" class="pop-btn text-white px-4 py-1.5 text-xs font-black" style="background-color: var(--color-primary);">SAVE PROFILE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Shot Setup -->
+  <div id="shot-modal" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-6 hidden">
+    <div class="pop-card max-w-xl w-full p-6 bg-white space-y-4">
+      <div class="flex items-center justify-between border-b-2 border-black pb-3">
+        <h3 id="shot-modal-title" class="font-heading font-black text-lg text-black flex items-center gap-2">
+          <i class="fa-solid fa-camera" style="color: var(--color-purple);"></i>
+          CAMERA SHOT ENTRY
+        </h3>
+        <button onclick="closeShotModal()" class="pop-btn bg-black text-white w-7 h-7 flex items-center justify-center text-xs">✕</button>
+      </div>
+
+      <input type="hidden" id="modal-shot-id">
+
+      <div class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-black uppercase text-black mb-1">SCENE & SHOT #</label>
+            <input type="text" id="modal-shot-num" class="w-full bg-white border-2 border-black p-2 text-xs font-bold text-black" placeholder="e.g. SCENE 01 - SHOT 1A">
+          </div>
+          <div>
+            <label class="block font-black uppercase text-black mb-1">SHOT FRAMING</label>
+            <select id="modal-shot-framing" class="w-full bg-white border-2 border-black p-2 text-xs font-bold text-black">
+              <option value="WS (Wide / Establishing)">WS (Wide / Establishing)</option>
+              <option value="MS (Medium Shot)">MS (Medium Shot)</option>
+              <option value="MCU (Medium Close-Up)">MCU (Medium Close-Up)</option>
+              <option value="CU (Close-Up)">CU (Close-Up)</option>
+              <option value="ECU (Extreme Close-Up)">ECU (Extreme Close-Up)</option>
+              <option value="OTS (Over-The-Shoulder)">OTS (Over-The-Shoulder)</option>
+              <option value="POV (Point-of-View)">POV (Point-of-View)</option>
+              <option value="Dutch Angle">Dutch Angle (Tilted)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-black uppercase text-black mb-1">LENS FOCAL LENGTH</label>
+            <input type="text" id="modal-shot-lens" class="w-full bg-white border-2 border-black p-2 text-xs text-black" placeholder="e.g. 35mm Prime or 85mm T1.4">
+          </div>
+          <div>
+            <label class="block font-black uppercase text-black mb-1">CAMERA MOVEMENT</label>
+            <select id="modal-shot-move" class="w-full bg-white border-2 border-black p-2 text-xs font-bold text-black">
+              <option value="Static / Locked-Off">Static / Locked-Off</option>
+              <option value="Slow Dolly In">Slow Dolly In</option>
+              <option value="Tracking / Steadicam">Tracking / Steadicam</option>
+              <option value="Pan / Tilt">Pan / Tilt</option>
+              <option value="Handheld (Gritty)">Handheld (Gritty)</option>
+              <option value="Crane / Jib Overhead">Crane / Jib Overhead</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-black uppercase text-black mb-1">ACTION & DRAMATIC REASON</label>
+          <textarea id="modal-shot-action" rows="3" class="w-full bg-white border-2 border-black p-2 text-xs text-black resize-none" placeholder="What occurs inside this framing and what emotion is highlighted..."></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t-2 border-black">
+        <button onclick="closeShotModal()" class="pop-btn bg-white text-black px-3.5 py-1.5 text-xs font-bold">CANCEL</button>
+        <button onclick="saveShotModalData()" class="pop-btn text-white px-4 py-1.5 text-xs font-black" style="background-color: var(--color-purple);">SAVE SHOT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Print & Pitch Dossier -->
+  <div id="print-modal" class="fixed inset-0 bg-black/85 z-50 flex flex-col p-4 sm:p-8 hidden overflow-y-auto">
+    <div class="max-w-4xl w-full mx-auto bg-white text-black p-8 sm:p-12 pop-card print:border-none print:shadow-none space-y-6">
+      <div class="flex justify-between items-center border-b-3 border-black pb-4 print:hidden">
+        <span class="text-xs font-black bg-black text-white px-3 py-1">PRODUCTION PACK READY FOR PRINT</span>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="pop-btn text-white text-xs px-4 py-2 font-black" style="background-color: var(--color-primary);">
+            <i class="fa-solid fa-print"></i> PRINT NOW
+          </button>
+          <button onclick="closePrintModal()" class="pop-btn bg-white text-black text-xs px-4 py-2 font-bold">
+            CLOSE
+          </button>
+        </div>
+      </div>
+
+      <div id="print-dossier-content" class="space-y-6 text-sm">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =====================================================================
+       CINESPHERE STUDIO: APPLICATION STATE & STORAGE ENGINE
+       ===================================================================== */
+    const STORAGE_KEY = 'cinesphere_production_v3';
+
+    let appData = {
+      title: "THE MIDNIGHT ECHOES",
+      logline: "When an insomniac acoustic engineer records a haunting frequency inside a shuttered subway tunnel, he must decode the anomaly before it consumes his grip on reality.",
+      question: "Can he differentiate authentic memory from acoustic delusion?",
+      genre: "Psychological Thriller / Neo-Noir",
+      runtime: "Feature • 108 Minutes",
+      theme: "The destructive toll of unresolved grief and the phantom patterns we construct to escape it.",
+      
+      themeSettings: {
+        primary: "#FF2A55",
+        blue: "#1E40FF",
+        purple: "#8A2BE2",
+        bg: "#FFFFFF",
+        uiFont: "'Space Grotesk', sans-serif",
+        scriptFont: "'Courier Prime', Courier, monospace"
+      },
+
+      beats: [
+        { id: 'b1', act: 'ACT I', title: 'Inciting Frequency', desc: 'Kaelen monitors nighttime seismic feedback and isolates an unmistakable human vocal signature in an empty station.' },
+        { id: 'b2', act: 'ACT II-A', title: 'The Descent', desc: 'Tracing the transmission leads him to a forgotten transit bunker where electromagnetic fields distort his tape machines.' },
+        { id: 'b3', act: 'ACT II-B', title: 'Midpoint Confrontation', desc: 'He confronts his estranged mentor, only to learn the voice belonged to his late sister from an unsolved case.' },
+        { id: 'b4', act: 'ACT II-C', title: 'Acoustic Collapse', desc: 'His recordings are confiscated; unable to verify the signals, he enters the tunnel alone in complete darkness.' },
+        { id: 'b5', act: 'ACT III', title: 'The Silent Threshold', desc: 'Rather than running, Kaelen faces the reverberation, letting the tape spool unravel into the subterranean wind.' }
+      ],
+
+      characters: [
+        {
+          id: 'c1',
+          name: 'KAELEN VOSS',
+          role: 'Protagonist',
+          physical: 'Mid-30s, worn canvas jacket, carries high-end shotgun mic and portable Nagra recorder.',
+          social: 'Specialized sound tech for municipal transit; solitary lifestyle, few close confidants.',
+          mental: 'WANT: Prove the sound exists. NEED: Acknowledge that the voice cannot bring his sister back.',
+          bio: 'Former studio sound designer who retreated into transit night-shifts following a family tragedy.'
+        },
+        {
+          id: 'c2',
+          name: 'DR. ELEANOR REED',
+          role: 'Antagonist',
+          physical: '50s, sharp spectacles, tailored charcoal overcoat, precise articulation.',
+          social: 'Director of Acoustic Infrastructure; politically connected and protective of transit secrets.',
+          mental: 'WANT: Suppress subterranean frequency reports. NEED: Shield her past engineering errors.',
+          bio: 'Commissioned the deep bore project 15 years ago; knows what lies beneath the bedrock.'
+        }
+      ],
+
+      shots: [
+        {
+          id: 's1',
+          status: 'Taken',
+          number: 'SCENE 01 - SHOT 01',
+          framing: 'WS (Wide / Establishing)',
+          lens: '24mm Anamorphic',
+          move: 'Slow Dolly In',
+          action: 'The abandoned station platform bathed in sodium vapor light. Water drips in rhythm.'
+        },
+        {
+          id: 's2',
+          status: 'Prepped',
+          number: 'SCENE 01 - SHOT 02',
+          framing: 'MCU (Medium Close-Up)',
+          lens: '50mm Prime T1.5',
+          move: 'Static / Locked-Off',
+          action: 'Kaelen adjusts his headphone volume. The needle on his decibel meter hits red.'
+        },
+        {
+          id: 's3',
+          status: 'Planned',
+          number: 'SCENE 02 - SHOT 01',
+          framing: 'POV (Point-of-View)',
+          lens: '35mm Prime',
+          move: 'Handheld (Gritty)',
+          action: 'Looking through the dark subway tunnel as the flashlight beam flickers against rusty tracks.'
+        }
+      ],
+
+      storyboards: [],
+
+      moodSwatches: [
+        '#FF2A55', '#1E40FF', '#8A2BE2', '#0A0A14', '#E2E8F0', '#FFE600'
+      ],
+
+      moodImages: [],
+
+      script: `FADE IN:
+
+EXT. ABANDONED SUBWAY PLATFORM - NIGHT
+
+Water drums against an exposed steel girder. A single sodium vapor lamp buzzes overhead.
+
+KAELEN VOSS (34) crouches at the tunnel mouth. Heavy headphones seal around his ears. He raises a shotgun microphone into the darkness.
+
+KAELEN
+(whispering)
+Testing channel four. Zero two hundred hours.
+
+A long hiss of static. Then--
+A faint, human reverberation echoes through the concrete pipe.
+
+KAELEN
+(tense)
+There it is again.
+
+He hits RECORD on the analog deck. The VU needles jerk into the red.
+
+CUT TO:
+
+INT. TRANSIT DISPATCH OFFICE - CONTINUOUS
+
+DR. ELEANOR REED stands behind the reinforced glass window, looking at the seismic monitor.
+
+DR. REED
+Tell me he isn't back down there.`,
+      
+      scriptDirection: 'ltr'
+    };
+
+    /* Save & Load Functions */
+    function saveToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      } catch (e) {
+        console.warn('Storage limit reached or blocked', e);
+      }
+    }
+
+    function loadFromStorage() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          appData = { ...appData, ...parsed };
+        }
+      } catch (e) {
+        console.error('Failed to parse saved data', e);
+      }
+    }
+
+    function triggerToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-10');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-10');
+      }, 2500);
+    }
+
+    /* =====================================================================
+       CUSTOMIZER LOGIC (COLORS & FONTS)
+       ===================================================================== */
+    function toggleCustomizerModal() {
+      const m = document.getElementById('customizer-modal');
+      m.classList.toggle('hidden');
+    }
+
+    function updateThemeVariable(varName, value) {
+      document.documentElement.style.setProperty(varName, value);
+      if (varName === '--color-primary') {
+        appData.themeSettings.primary = value;
+        document.getElementById('theme-color-primary-val').textContent = value;
+      } else if (varName === '--color-blue') {
+        appData.themeSettings.blue = value;
+        document.getElementById('theme-color-blue-val').textContent = value;
+      } else if (varName === '--color-purple') {
+        appData.themeSettings.purple = value;
+        document.getElementById('theme-color-purple-val').textContent = value;
+      } else if (varName === '--color-bg') {
+        appData.themeSettings.bg = value;
+        document.getElementById('theme-color-bg-val').textContent = value;
+      }
+      saveToStorage();
+      renderMindMap();
+    }
+
+    function updateUIFont(fontVal) {
+      appData.themeSettings.uiFont = fontVal;
+      document.documentElement.style.setProperty('--font-body', fontVal);
+      document.documentElement.style.setProperty('--font-heading', fontVal);
+      saveToStorage();
+    }
+
+    function updateScriptFont(fontVal) {
+      appData.themeSettings.scriptFont = fontVal;
+      document.documentElement.style.setProperty('--font-script', fontVal);
+      saveToStorage();
+    }
+
+    function applyThemePreset(presetKey) {
+      if (presetKey === 'neoPop') {
+        updateThemeVariable('--color-primary', '#FF2A55');
+        updateThemeVariable('--color-blue', '#1E40FF');
+        updateThemeVariable('--color-purple', '#8A2BE2');
+        updateThemeVariable('--color-bg', '#FFFFFF');
+      } else if (presetKey === 'cyberCrimson') {
+        updateThemeVariable('--color-primary', '#FF003C');
+        updateThemeVariable('--color-blue', '#00F0FF');
+        updateThemeVariable('--color-purple', '#FFE600');
+        updateThemeVariable('--color-bg', '#FAFAFA');
+      } else if (presetKey === 'midnightMono') {
+        updateThemeVariable('--color-primary', '#111827');
+        updateThemeVariable('--color-blue', '#2563EB');
+        updateThemeVariable('--color-purple', '#4F46E5');
+        updateThemeVariable('--color-bg', '#FFFFFF');
+      }
+      triggerToast('THEME PRESET APPLIED');
+    }
+
+    function resetThemeDefaults() {
+      applyThemePreset('neoPop');
+      updateUIFont("'Space Grotesk', sans-serif");
+      updateScriptFont("'Courier Prime', Courier, monospace");
+      document.getElementById('theme-font-ui').value = "'Space Grotesk', sans-serif";
+      document.getElementById('theme-font-script').value = "'Courier Prime', Courier, monospace";
+      triggerToast('DEFAULTS RESTORED');
+    }
+
+    function syncThemeSettings() {
+      if (!appData.themeSettings) return;
+      const ts = appData.themeSettings;
+      if (ts.primary) document.documentElement.style.setProperty('--color-primary', ts.primary);
+      if (ts.blue) document.documentElement.style.setProperty('--color-blue', ts.blue);
+      if (ts.purple) document.documentElement.style.setProperty('--color-purple', ts.purple);
+      if (ts.bg) document.documentElement.style.setProperty('--color-bg', ts.bg);
+      if (ts.uiFont) {
+        document.documentElement.style.setProperty('--font-body', ts.uiFont);
+        document.documentElement.style.setProperty('--font-heading', ts.uiFont);
+      }
+      if (ts.scriptFont) {
+        document.documentElement.style.setProperty('--font-script', ts.scriptFont);
+      }
+    }
+
+    /* =====================================================================
+       TAB SWITCHING
+       ===================================================================== */
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('bg-black', 'text-white');
+        btn.classList.add('bg-white', 'text-black');
+      });
+
+      const activePanel = document.getElementById(`panel-${tabId}`);
+      const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+
+      if (activePanel) activePanel.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-white', 'text-black');
+        activeBtn.classList.add('bg-black', 'text-white');
+      }
+
+      if (tabId === 'treatment') {
+        setTimeout(renderMindMap, 50);
+      }
+    }
+
+    /* =====================================================================
+       STREAMLINED CHARACTER MANAGEMENT
+       ===================================================================== */
+    function openNewCharacterModal() {
+      document.getElementById('char-modal-title').innerHTML = '<i class="fa-solid fa-user-plus" style="color: var(--color-primary);"></i> NEW CHARACTER PROFILE';
+      document.getElementById('modal-char-id').value = '';
+      document.getElementById('modal-char-name').value = '';
+      document.getElementById('modal-char-role').value = 'Protagonist';
+      document.getElementById('modal-char-physical').value = '';
+      document.getElementById('modal-char-social').value = '';
+      document.getElementById('modal-char-mental').value = '';
+      document.getElementById('modal-char-bio').value = '';
+      document.getElementById('character-modal').classList.remove('hidden');
+    }
+
+    function openEditCharacterModal(id) {
+      const c = appData.characters.find(item => item.id === id);
+      if (!c) return;
+
+      document.getElementById('char-modal-title').innerHTML = '<i class="fa-solid fa-user-pen" style="color: var(--color-blue);"></i> EDIT CHARACTER PROFILE';
+      document.getElementById('modal-char-id').value = c.id;
+      document.getElementById('modal-char-name').value = c.name;
+      document.getElementById('modal-char-role').value = c.role;
+      document.getElementById('modal-char-physical').value = c.physical || '';
+      document.getElementById('modal-char-social').value = c.social || '';
+      document.getElementById('modal-char-mental').value = c.mental || '';
+      document.getElementById('modal-char-bio').value = c.bio || '';
+      document.getElementById('character-modal').classList.remove('hidden');
+    }
+
+    function closeCharacterModal() {
+      document.getElementById('character-modal').classList.add('hidden');
+    }
+
+    function saveCharacterModalData() {
+      const id = document.getElementById('modal-char-id').value;
+      const name = document.getElementById('modal-char-name').value.trim();
+
+      if (!name) {
+        triggerToast('PLEASE ENTER A CHARACTER NAME');
+        return;
+      }
+
+      const role = document.getElementById('modal-char-role').value;
+      const physical = document.getElementById('modal-char-physical').value.trim();
+      const social = document.getElementById('modal-char-social').value.trim();
+      const mental = document.getElementById('modal-char-mental').value.trim();
+      const bio = document.getElementById('modal-char-bio').value.trim();
+
+      if (id) {
+        const c = appData.characters.find(item => item.id === id);
+        if (c) {
+          c.name = name.toUpperCase();
+          c.role = role;
+          c.physical = physical;
+          c.social = social;
+          c.mental = mental;
+          c.bio = bio;
+        }
+      } else {
+        appData.characters.push({
+          id: 'c_' + Date.now(),
+          name: name.toUpperCase(),
+          role,
+          physical,
+          social,
+          mental,
+          bio
+        });
+      }
+
+      saveToStorage();
+      renderCharacters();
+      renderMindMap();
+      closeCharacterModal();
+      triggerToast('CHARACTER PROFILE SAVED');
+    }
+
+    function deleteCharacter(id) {
+      appData.characters = appData.characters.filter(c => c.id !== id);
+      saveToStorage();
+      renderCharacters();
+      renderMindMap();
+      triggerToast('CHARACTER REMOVED');
+    }
+
+    function renderCharacters() {
+      const grid = document.getElementById('character-grid');
+      document.getElementById('nav-char-count').textContent = appData.characters.length;
+
+      if (!appData.characters.length) {
+        grid.innerHTML = `
+          <div class="col-span-full bg-white border-2 border-dashed border-black p-8 text-center">
+            <p class="font-bold text-slate-500 text-sm">No character dossiers yet. Click "NEW CHARACTER" to architect your cast.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = appData.characters.map(c => `
+        <div class="pop-card p-5 space-y-3 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2 border-b-2 border-black pb-2">
+              <div>
+                <span class="text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 border border-black ${
+                  c.role === 'Protagonist' ? 'bg-[#FF2A55] text-white' : 
+                  c.role === 'Antagonist' ? 'bg-[#1E40FF] text-white' : 'bg-slate-200 text-black'
+                }">${c.role}</span>
+                <h3 class="font-heading font-black text-base text-black mt-1 tracking-tight">${c.name}</h3>
+              </div>
+              <div class="flex items-center gap-1">
+                <button onclick="openEditCharacterModal('${c.id}')" class="pop-btn bg-white w-7 h-7 flex items-center justify-center text-xs" title="Edit">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+                <button onclick="deleteCharacter('${c.id}')" class="pop-btn bg-white hover:bg-red-500 hover:text-white w-7 h-7 flex items-center justify-center text-xs" title="Delete">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="space-y-2 mt-3 text-xs">
+              <div class="bg-white border-2 border-black p-2">
+                <span class="block text-[10px] font-black text-[#1E40FF] uppercase">1. PHYSICAL PRESENCE</span>
+                <p class="text-slate-800 text-[11px] leading-snug mt-0.5">${c.physical || 'Not specified'}</p>
+              </div>
+
+              <div class="bg-white border-2 border-black p-2">
+                <span class="block text-[10px] font-black text-[#8A2BE2] uppercase">2. SOCIAL DYNAMIC</span>
+                <p class="text-slate-800 text-[11px] leading-snug mt-0.5">${c.social || 'Not specified'}</p>
+              </div>
+
+              <div class="bg-white border-2 border-black p-2">
+                <span class="block text-[10px] font-black text-[#FF2A55] uppercase">3. WANT VS. NEED</span>
+                <p class="text-slate-800 text-[11px] leading-snug mt-0.5">${c.mental || 'Not specified'}</p>
+              </div>
+
+              ${c.bio ? `<p class="text-slate-600 italic text-[11px] pt-1">"${c.bio}"</p>` : ''}
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-slate-200 flex justify-between items-center text-[10px] font-bold text-slate-500">
+            <span>READY FOR SCRIPT</span>
+            <button onclick="insertCharacterIntoScript('${c.name}')" class="text-black hover:text-[#1E40FF] font-black uppercase underline">
+              + Insert Into Script
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function insertCharacterIntoScript(name) {
+      switchTab('screenplay');
+      const textarea = document.getElementById('screenplay-editor');
+      const insertion = `\n\n${name}\n(speaking)\n`;
+      textarea.value += insertion;
+      handleScriptMetrics();
+      triggerToast(`INSERTED ${name} INTO SCRIPT`);
+    }
+
+    /* =====================================================================
+       SHOT LIST MANAGEMENT
+       ===================================================================== */
+    function openShotModal() {
+      document.getElementById('shot-modal-title').innerHTML = '<i class="fa-solid fa-plus" style="color: var(--color-purple);"></i> NEW SHOT SETUP';
+      document.getElementById('modal-shot-id').value = '';
+      document.getElementById('modal-shot-num').value = `SCENE 0${appData.shots.length + 1} - SHOT 01`;
+      document.getElementById('modal-shot-framing').value = 'WS (Wide / Establishing)';
+      document.getElementById('modal-shot-lens').value = '35mm Prime';
+      document.getElementById('modal-shot-move').value = 'Static / Locked-Off';
+      document.getElementById('modal-shot-action').value = '';
+      document.getElementById('shot-modal').classList.remove('hidden');
+    }
+
+    function openEditShotModal(id) {
+      const s = appData.shots.find(item => item.id === id);
+      if (!s) return;
+
+      document.getElementById('shot-modal-title').innerHTML = '<i class="fa-solid fa-pen" style="color: var(--color-blue);"></i> EDIT SHOT SETUP';
+      document.getElementById('modal-shot-id').value = s.id;
+      document.getElementById('modal-shot-num').value = s.number;
+      document.getElementById('modal-shot-framing').value = s.framing;
+      document.getElementById('modal-shot-lens').value = s.lens;
+      document.getElementById('modal-shot-move').value = s.move;
+      document.getElementById('modal-shot-action').value = s.action;
+      document.getElementById('shot-modal').classList.remove('hidden');
+    }
+
+    function closeShotModal() {
+      document.getElementById('shot-modal').classList.add('hidden');
+    }
+
+    function saveShotModalData() {
+      const id = document.getElementById('modal-shot-id').value;
+      const number = document.getElementById('modal-shot-num').value.trim() || 'SHOT';
+      const framing = document.getElementById('modal-shot-framing').value;
+      const lens = document.getElementById('modal-shot-lens').value.trim() || 'Standard Lens';
+      const move = document.getElementById('modal-shot-move').value;
+      const action = document.getElementById('modal-shot-action').value.trim();
+
+      if (id) {
+        const s = appData.shots.find(item => item.id === id);
+        if (s) {
+          s.number = number;
+          s.framing = framing;
+          s.lens = lens;
+          s.move = move;
+          s.action = action;
+        }
+      } else {
+        appData.shots.push({
+          id: 's_' + Date.now(),
+          status: 'Planned',
+          number,
+          framing,
+          lens,
+          move,
+          action
+        });
+      }
+
+      saveToStorage();
+      renderShotList();
+      closeShotModal();
+      triggerToast('SHOT SETUP LOGGED');
+    }
+
+    function toggleShotStatus(id) {
+      const s = appData.shots.find(item => item.id === id);
+      if (!s) return;
+      const cycle = { 'Planned': 'Prepped', 'Prepped': 'Taken', 'Taken': 'Planned' };
+      s.status = cycle[s.status] || 'Planned';
+      saveToStorage();
+      renderShotList();
+    }
+
+    function deleteShot(id) {
+      appData.shots = appData.shots.filter(s => s.id !== id);
+      saveToStorage();
+      renderShotList();
+      triggerToast('SHOT REMOVED');
+    }
+
+    function renderShotList() {
+      const tbody = document.getElementById('shot-list-body');
+      document.getElementById('nav-shot-count').textContent = appData.shots.length;
+
+      if (!appData.shots.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="p-6 text-center text-slate-500 font-bold">
+              No shots listed yet. Click "ADD SHOT" to generate your call sheet.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = appData.shots.map(s => {
+        let badgeStyle = 'bg-slate-200 text-black';
+        if (s.status === 'Prepped') badgeStyle = 'bg-[#1E40FF] text-white';
+        if (s.status === 'Taken') badgeStyle = 'bg-[#FF2A55] text-white';
+
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="p-3 border-2 border-black text-center">
+              <button onclick="toggleShotStatus('${s.id}')" class="pop-btn text-[10px] font-black px-2 py-0.5 uppercase ${badgeStyle}">
+                ${s.status}
+              </button>
+            </td>
+            <td class="p-3 border-2 border-black font-black font-heading">${s.number}</td>
+            <td class="p-3 border-2 border-black font-bold text-slate-800">${s.framing}</td>
+            <td class="p-3 border-2 border-black font-mono text-xs">${s.lens}</td>
+            <td class="p-3 border-2 border-black font-medium">${s.move}</td>
+            <td class="p-3 border-2 border-black text-slate-700">${s.action || '—'}</td>
+            <td class="p-3 border-2 border-black text-right">
+              <div class="flex items-center justify-end gap-1">
+                <button onclick="openEditShotModal('${s.id}')" class="pop-btn bg-white w-6 h-6 flex items-center justify-center text-[10px]" title="Edit">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+                <button onclick="deleteShot('${s.id}')" class="pop-btn bg-white hover:bg-red-500 hover:text-white w-6 h-6 flex items-center justify-center text-[10px]" title="Delete">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function exportShotListCSV() {
+      let csv = 'Status,Scene_Shot,Framing,Lens,Movement,Description\n';
+      appData.shots.forEach(s => {
+        const row = [
+          s.status,
+          `"${s.number.replace(/"/g, '""')}"`,
+          `"${s.framing}"`,
+          `"${s.lens}"`,
+          `"${s.move}"`,
+          `"${(s.action || '').replace(/"/g, '""')}"`
+        ];
+        csv += row.join(',') + '\n';
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `${appData.title.replace(/\s+/g, '_')}_ShotList.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      triggerToast('SHOT LIST CSV EXPORTED');
+    }
+
+    /* =====================================================================
+       STORYBOARD CANVAS & SEQUENCE
+       ===================================================================== */
+    let canvas, ctx;
+    let isDrawing = false;
+    let currentColor = '#000000';
+    let currentTool = 'pen';
+
+    function initCanvas() {
+      canvas = document.getElementById('sketch-canvas');
+      if (!canvas) return;
+      ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        return {
+          x: (clientX - rect.left) * scaleX,
+          y: (clientY - rect.top) * scaleY
+        };
+      }
+
+      function startDraw(e) {
+        e.preventDefault();
+        isDrawing = true;
+        const pos = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+      }
+
+      function draw(e) {
+        if (!isDrawing) return;
+        e.preventDefault();
+        const pos = getPos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.strokeStyle = currentTool === 'eraser' ? '#FFFFFF' : currentColor;
+        ctx.lineWidth = currentTool === 'eraser' ? 14 : 3;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+      }
+
+      function stopDraw() {
+        isDrawing = false;
+      }
+
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDraw);
+      canvas.addEventListener('mouseleave', stopDraw);
+
+      canvas.addEventListener('touchstart', startDraw, { passive: false });
+      canvas.addEventListener('touchmove', draw, { passive: false });
+      canvas.addEventListener('touchend', stopDraw);
+    }
+
+    function setDrawingColor(colorHex) {
+      currentTool = 'pen';
+      currentColor = colorHex;
+    }
+
+    function setDrawingTool(tool) {
+      currentTool = tool;
+    }
+
+    function clearCanvas() {
+      if (!ctx || !canvas) return;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function saveCanvasToStoryboard() {
+      if (!canvas) return;
+      const dataUrl = canvas.toDataURL('image/png');
+      const label = document.getElementById('board-shot-label').value.trim() || `FRAME ${appData.storyboards.length + 1}`;
+      const desc = document.getElementById('board-shot-desc').value.trim();
+
+      appData.storyboards.push({
+        id: 'sb_' + Date.now(),
+        image: dataUrl,
+        label,
+        desc
+      });
+
+      saveToStorage();
+      renderStoryboards();
+      clearCanvas();
+      document.getElementById('board-shot-label').value = '';
+      document.getElementById('board-shot-desc').value = '';
+      triggerToast('FRAME ADDED TO STORYBOARD');
+    }
+
+    function uploadFrameImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const label = document.getElementById('board-shot-label').value.trim() || `UPLOADED FRAME ${appData.storyboards.length + 1}`;
+        const desc = document.getElementById('board-shot-desc').value.trim();
+
+        appData.storyboards.push({
+          id: 'sb_' + Date.now(),
+          image: e.target.result,
+          label,
+          desc
+        });
+
+        saveToStorage();
+        renderStoryboards();
+        triggerToast('IMAGE FRAME ADDED');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function deleteStoryboardFrame(id) {
+      appData.storyboards = appData.storyboards.filter(b => b.id !== id);
+      saveToStorage();
+      renderStoryboards();
+      triggerToast('FRAME DELETED');
+    }
+
+    function renderStoryboards() {
+      const gallery = document.getElementById('storyboard-gallery');
+      document.getElementById('board-count-badge').textContent = `${appData.storyboards.length} FRAMES`;
+
+      if (!appData.storyboards.length) {
+        gallery.innerHTML = `
+          <div class="col-span-full border-2 border-dashed border-black p-8 text-center bg-white">
+            <p class="font-bold text-slate-500 text-xs">No frames in sequence. Sketch on the pad or upload reference art to build your reel.</p>
+          </div>
+        `;
+        return;
+      }
+
+      gallery.innerHTML = appData.storyboards.map((b, idx) => `
+        <div class="pop-card-sm p-3 space-y-2 bg-white flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between border-b-2 border-black pb-1.5 mb-2">
+              <span class="text-[10px] font-black uppercase text-black">FRAME #${idx + 1}</span>
+              <button onclick="deleteStoryboardFrame('${b.id}')" class="pop-btn bg-white hover:bg-red-500 hover:text-white w-6 h-6 flex items-center justify-center text-[10px]">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+            <div class="border-2 border-black aspect-video bg-white overflow-hidden mb-2">
+              <img src="${b.image}" alt="Storyboard frame" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-heading font-black text-xs text-black">${b.label}</h4>
+            ${b.desc ? `<p class="text-[11px] text-slate-600 mt-1">${b.desc}</p>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* =====================================================================
+       MOOD BOARD MODULE
+       ===================================================================== */
+    function addPaletteSwatchPrompt() {
+      const hex = prompt('Enter a Hex color code (e.g. #FF2A55, #1E40FF, #39FF14):', '#');
+      if (hex && hex.trim().length >= 4) {
+        appData.moodSwatches.push(hex.trim().toUpperCase());
+        saveToStorage();
+        renderMoodSwatches();
+        triggerToast('COLOR SWATCH ADDED');
+      }
+    }
+
+    function removePaletteSwatch(idx) {
+      appData.moodSwatches.splice(idx, 1);
+      saveToStorage();
+      renderMoodSwatches();
+    }
+
+    function renderMoodSwatches() {
+      const cont = document.getElementById('mood-swatches-container');
+      cont.innerHTML = appData.moodSwatches.map((hex, i) => `
+        <div onclick="removePaletteSwatch(${i})" class="pop-btn cursor-pointer px-3 py-1 flex items-center gap-2 border-2 border-black bg-white" title="Click to remove">
+          <span class="w-4 h-4 border border-black" style="background-color: ${hex};"></span>
+          <span class="font-mono text-xs font-bold text-black">${hex}</span>
+        </div>
+      `).join('');
+    }
+
+    function uploadMoodboardImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const caption = prompt('Caption or visual reference note for this image:', 'Lighting / Costume ref');
+        appData.moodImages.push({
+          id: 'mb_' + Date.now(),
+          image: e.target.result,
+          caption: caption || 'Visual Reference'
+        });
+        saveToStorage();
+        renderMoodImages();
+        triggerToast('STILL ADDED TO MOOD BOARD');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function deleteMoodImage(id) {
+      appData.moodImages = appData.moodImages.filter(img => img.id !== id);
+      saveToStorage();
+      renderMoodImages();
+      triggerToast('STILL REMOVED');
+    }
+
+    function renderMoodImages() {
+      const grid = document.getElementById('moodboard-grid');
+      if (!appData.moodImages.length) {
+        grid.innerHTML = `
+          <div class="col-span-full border-2 border-dashed border-black p-8 text-center bg-white">
+            <p class="font-bold text-slate-500 text-xs">No reference stills uploaded yet. Click "UPLOAD STILL" to assemble your cinematography & wardrobe mood board.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = appData.moodImages.map(img => `
+        <div class="pop-card-sm p-3 bg-white space-y-2">
+          <div class="border-2 border-black aspect-video overflow-hidden bg-slate-100">
+            <img src="${img.image}" alt="Moodboard still" class="w-full h-full object-cover">
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-xs font-bold text-black truncate pr-1">${img.caption}</span>
+            <button onclick="deleteMoodImage('${img.id}')" class="pop-btn bg-white hover:bg-red-500 hover:text-white w-6 h-6 flex items-center justify-center text-[10px]">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* =====================================================================
+       DUAL-LANGUAGE SCREENPLAY STUDIO (EN & AR)
+       ===================================================================== */
+    function setScriptDirection(dir) {
+      const ed = document.getElementById('screenplay-editor');
+      const btnLtr = document.getElementById('dir-ltr-btn');
+      const btnRtl = document.getElementById('dir-rtl-btn');
+
+      appData.scriptDirection = dir;
+      if (dir === 'rtl') {
+        ed.classList.add('arabic-text');
+        btnRtl.classList.remove('bg-white', 'text-black');
+        btnRtl.classList.add('bg-black', 'text-white');
+        btnLtr.classList.remove('bg-black', 'text-white');
+        btnLtr.classList.add('bg-white', 'text-black');
+      } else {
+        ed.classList.remove('arabic-text');
+        btnLtr.classList.remove('bg-white', 'text-black');
+        btnLtr.classList.add('bg-black', 'text-white');
+        btnRtl.classList.remove('bg-black', 'text-white');
+        btnRtl.classList.add('bg-white', 'text-black');
+      }
+      saveToStorage();
+    }
+
+    function insertScriptToken(tokenType) {
+      const textarea = document.getElementById('screenplay-editor');
+      let insertStr = '';
+
+      switch (tokenType) {
+        case 'SCENE_INT':
+          insertStr = '\n\nINT. [LOCATION] - DAY\n';
+          break;
+        case 'SCENE_EXT':
+          insertStr = '\n\nEXT. [LOCATION] - NIGHT\n';
+          break;
+        case 'ACTION':
+          insertStr = '\n[Action line describing visuals and momentum.]\n';
+          break;
+        case 'CHARACTER':
+          insertStr = '\n\nCHARACTER NAME\n';
+          break;
+        case 'PARENTHETICAL':
+          insertStr = '(beat)\n';
+          break;
+        case 'DIALOGUE':
+          insertStr = 'Dialogue spoken here.\n';
+          break;
+        case 'TRANSITION':
+          insertStr = '\nCUT TO:\n\n';
+          break;
+        /* Arabic Direct Shortcuts */
+        case 'AR_INT':
+          insertStr = '\n\nمشهد داخلي. [الموقع] - نهار\n';
+          break;
+        case 'AR_EXT':
+          insertStr = '\n\nمشهد خارجي. [الموقع] - ليل\n';
+          break;
+        case 'AR_CHAR':
+          insertStr = '\n\nاسم الشخصية\n';
+          break;
+        case 'AR_BEAT':
+          insertStr = '(وقفة)\n';
+          break;
+        case 'AR_DIALOGUE':
+          insertStr = 'نص الحوار هنا.\n';
+          break;
+        case 'AR_CUT':
+          insertStr = '\nقطع إلى:\n\n';
+          break;
+      }
+
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const val = textarea.value;
+
+      textarea.value = val.substring(0, start) + insertStr + val.substring(end);
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + insertStr.length;
+      handleScriptMetrics();
+    }
+
+    function handleScriptMetrics() {
+      const text = document.getElementById('screenplay-editor').value;
+      appData.script = text;
+      saveToStorage();
+
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      document.getElementById('script-word-count').textContent = words;
+
+      // Estimate scene count via sluglines (English or Arabic)
+      const sceneMatches = text.match(/(INT\.|EXT\.|مشهد داخلي|مشهد خارجي)/gi) || [];
+      document.getElementById('script-scene-count').textContent = sceneMatches.length || 1;
+
+      // Estimate screen time: ~200 words per minute
+      const minutes = (words / 200).toFixed(1);
+      document.getElementById('script-time-est').textContent = `~${minutes} MIN`;
+    }
+
+    function copyScriptText() {
+      const text = document.getElementById('screenplay-editor').value;
+      if (document.queryCommandSupported('copy')) {
+        const dummy = document.createElement('textarea');
+        dummy.value = text;
+        document.body.appendChild(dummy);
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+        triggerToast('SCREENPLAY COPIED TO CLIPBOARD');
+      }
+    }
+
+    /* =====================================================================
+       TREATMENT BEATS & STORY MIND MAP CANVAS
+       ===================================================================== */
+    function renderBeats() {
+      const c = document.getElementById('beats-container');
+      c.innerHTML = appData.beats.map((b, i) => `
+        <div class="bg-white border-2 border-black p-3.5 space-y-1.5 shadow-[2px_2px_0px_#000]">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-black uppercase text-[#FF2A55]">${b.act}</span>
+            <span class="text-[10px] font-bold text-slate-500">BEAT 0${i + 1}</span>
+          </div>
+          <h4 class="font-heading font-black text-sm text-black">${b.title}</h4>
+          <p class="text-xs text-slate-700 leading-relaxed">${b.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderMindMap() {
+      const cvs = document.getElementById('mindmap-canvas');
+      if (!cvs) return;
+      const ctx = cvs.getContext('2d');
+      const w = cvs.width = cvs.offsetWidth;
+      const h = cvs.height = 420;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, w, h);
+
+      // Grid dots
+      ctx.fillStyle = '#E5E7EB';
+      for (let x = 10; x < w; x += 20) {
+        for (let y = 10; y < h; y += 20) {
+          ctx.fillRect(x, y, 1.5, 1.5);
+        }
+      }
+
+      const rootX = w / 2;
+      const rootY = h / 2;
+
+      // Draw Connection Lines
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = '#000000';
+
+      // Beat Nodes Left
+      const beatCount = appData.beats.length;
+      appData.beats.forEach((b, i) => {
+        const angle = Math.PI - 0.7 + (i / (beatCount - 1 || 1)) * 1.4;
+        const dist = Math.min(w, h) * 0.38;
+        const bx = rootX + Math.cos(angle) * dist;
+        const by = rootY + Math.sin(angle) * dist;
+
+        ctx.beginPath();
+        ctx.moveTo(rootX, rootY);
+        ctx.lineTo(bx, by);
+        ctx.stroke();
+
+        // Beat Box
+        ctx.fillStyle = '#FF2A55';
+        ctx.fillRect(bx - 45, by - 16, 90, 32);
+        ctx.strokeRect(bx - 45, by - 16, 90, 32);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 9px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(b.act, bx, by - 2);
+        ctx.font = 'bold 10px sans-serif';
+        ctx.fillText(b.title.substring(0, 11), bx, by + 10);
+      });
+
+      // Character Nodes Right
+      const charCount = appData.characters.length;
+      appData.characters.forEach((c, i) => {
+        const angle = -0.6 + (i / (charCount - 1 || 1)) * 1.2;
+        const dist = Math.min(w, h) * 0.38;
+        const cx = rootX + Math.cos(angle) * dist;
+        const cy = rootY + Math.sin(angle) * dist;
+
+        ctx.beginPath();
+        ctx.moveTo(rootX, rootY);
+        ctx.lineTo(cx, cy);
+        ctx.stroke();
+
+        ctx.fillStyle = '#1E40FF';
+        ctx.fillRect(cx - 50, cy - 16, 100, 32);
+        ctx.strokeRect(cx - 50, cy - 16, 100, 32);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 9px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(c.role.toUpperCase(), cx, cy - 2);
+        ctx.font = 'bold 10px sans-serif';
+        ctx.fillText(c.name.substring(0, 12), cx, cy + 10);
+      });
+
+      // Center Root Premise Node
+      ctx.fillStyle = '#8A2BE2';
+      ctx.fillRect(rootX - 75, rootY - 24, 150, 48);
+      ctx.lineWidth = 3;
+      ctx.strokeRect(rootX - 75, rootY - 24, 150, 48);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 10px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('STORY CORE', rootX, rootY - 5);
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillText(appData.title.substring(0, 16), rootX, rootY + 12);
+    }
+
+    function refreshMindMap() {
+      renderMindMap();
+      triggerToast('MIND MAP UPDATED');
+    }
+
+    function exportMindMapPNG() {
+      const cvs = document.getElementById('mindmap-canvas');
+      if (!cvs) return;
+      const url = cvs.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${appData.title.replace(/\s+/g, '_')}_StoryMindMap.png`;
+      a.click();
+      triggerToast('MIND MAP PNG DOWNLOADED');
+    }
+
+    /* =====================================================================
+       BACKUP & RESTORE JSON ENGINE
+       ===================================================================== */
+    function exportProjectJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `${appData.title.replace(/\s+/g, '_')}_ProductionMaster.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      triggerToast('PROJECT BACKUP EXPORTED (.JSON)');
+    }
+
+    function importProjectJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          appData = parsed;
+          saveToStorage();
+          syncThemeSettings();
+          initializeUI();
+          triggerToast('PROJECT RESTORED SUCCESSFULLY');
+        } catch (err) {
+          triggerToast('INVALID JSON FILE');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /* =====================================================================
+       PRINT / PDF PRODUCTION DOSSIER
+       ===================================================================== */
+    function openPrintModal() {
+      const container = document.getElementById('print-dossier-content');
+      container.innerHTML = `
+        <div class="border-b-4 border-black pb-4 text-center">
+          <h1 class="text-3xl font-black uppercase tracking-tight">${appData.title}</h1>
+          <p class="text-sm font-bold mt-1 text-slate-700">${appData.genre} • ${appData.runtime}</p>
+        </div>
+
+        <div>
+          <h2 class="text-base font-black uppercase border-b-2 border-black pb-1 mb-2">1. Treatment & Premise</h2>
+          <p class="text-xs font-semibold leading-relaxed mb-2"><b>LOGLINE:</b> ${appData.logline}</p>
+          <p class="text-xs font-semibold leading-relaxed"><b>CORE THEME:</b> ${appData.theme}</p>
+        </div>
+
+        <div>
+          <h2 class="text-base font-black uppercase border-b-2 border-black pb-1 mb-2">2. Character Profiles</h2>
+          <div class="grid grid-cols-2 gap-4 text-xs">
+            ${appData.characters.map(c => `
+              <div class="border-2 border-black p-3 space-y-1">
+                <span class="font-black uppercase text-[10px]">${c.role}</span>
+                <h3 class="font-black text-sm">${c.name}</h3>
+                <p><b>Physical:</b> ${c.physical || '—'}</p>
+                <p><b>Social:</b> ${c.social || '—'}</p>
+                <p><b>Psychological:</b> ${c.mental || '—'}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-base font-black uppercase border-b-2 border-black pb-1 mb-2">3. Shot List Cue Sheet</h2>
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b-2 border-black font-black">
+                <th class="py-1">SHOT #</th>
+                <th class="py-1">FRAMING</th>
+                <th class="py-1">LENS</th>
+                <th class="py-1">MOVEMENT</th>
+                <th class="py-1">ACTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${appData.shots.map(s => `
+                <tr class="border-b border-slate-300">
+                  <td class="py-1 font-bold">${s.number}</td>
+                  <td class="py-1">${s.framing}</td>
+                  <td class="py-1">${s.lens}</td>
+                  <td class="py-1">${s.move}</td>
+                  <td class="py-1">${s.action || '—'}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <h2 class="text-base font-black uppercase border-b-2 border-black pb-1 mb-2">4. Screenplay Pages</h2>
+          <pre class="font-mono text-xs whitespace-pre-wrap leading-relaxed p-4 bg-slate-50 border border-black">${appData.script}</pre>
+        </div>
+      `;
+      document.getElementById('print-modal').classList.remove('hidden');
+    }
+
+    function closePrintModal() {
+      document.getElementById('print-modal').classList.add('hidden');
+    }
+
+    /* =====================================================================
+       INITIALIZATION
+       ===================================================================== */
+    function initializeUI() {
+      document.getElementById('project-title').value = appData.title;
+      document.getElementById('story-logline').value = appData.logline;
+      document.getElementById('story-question').value = appData.question;
+      document.getElementById('story-genre').value = appData.genre;
+      document.getElementById('story-runtime').value = appData.runtime;
+      document.getElementById('story-theme').value = appData.theme;
+      document.getElementById('screenplay-editor').value = appData.script;
+
+      // Set direction
+      setScriptDirection(appData.scriptDirection || 'ltr');
+
+      renderBeats();
+      renderCharacters();
+      renderShotList();
+      renderStoryboards();
+      renderMoodSwatches();
+      renderMoodImages();
+      handleScriptMetrics();
+      renderMindMap();
+    }
+
+    window.addEventListener('load', () => {
+      loadFromStorage();
+      syncThemeSettings();
+      initCanvas();
+      initializeUI();
+
+      // Project title live update
+      document.getElementById('project-title').addEventListener('input', (e) => {
+        appData.title = e.target.value;
+        saveToStorage();
+        renderMindMap();
+      });
+
+      // Treatment fields live update
+      document.getElementById('story-logline').addEventListener('input', (e) => {
+        appData.logline = e.target.value;
+        saveToStorage();
+      });
+      document.getElementById('story-question').addEventListener('input', (e) => {
+        appData.question = e.target.value;
+        saveToStorage();
+      });
+      document.getElementById('story-genre').addEventListener('input', (e) => {
+        appData.genre = e.target.value;
+        saveToStorage();
+      });
+      document.getElementById('story-runtime').addEventListener('input', (e) => {
+        appData.runtime = e.target.value;
+        saveToStorage();
+      });
+      document.getElementById('story-theme').addEventListener('input', (e) => {
+        appData.theme = e.target.value;
+        saveToStorage();
+      });
+    });
+
+    window.addEventListener('resize', () => {
+      renderMindMap();
+    });
+  </script>
+</body>
+</html>
